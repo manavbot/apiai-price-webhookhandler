@@ -36,18 +36,17 @@ def webhook():
 
 
 def processRequest(req):
-    if req.get("result").get("action") != "yahooWeatherForecast":
+    if req.get("result").get("action") != "PrintUberData":
         return {}
-    baseurl = "https://query.yahooapis.com/v1/public/yql?"
-    yql_query = makeYqlQuery(req)
+    baseurl = "https://api.uber.com/v1.2/estimates/time?start_latitude=37.7752315&start_longitude=-122.418075"
+    yql_query = None
     if yql_query is None:
         return {}
-    yql_url = baseurl + urlencode({'q': yql_query}) + "&format=json"
+    yql_url = baseurl + "&format=json"
     result = urlopen(yql_url).read()
     data = json.loads(result)
     res = makeWebhookResult(data)
     return res
-
 
 def makeYqlQuery(req):
     result = req.get("result")
@@ -60,32 +59,25 @@ def makeYqlQuery(req):
 
 
 def makeWebhookResult(data):
-    query = data.get('query')
-    if query is None:
+    times = data.get('times')
+    if times is None:
         return {}
 
-    result = query.get('results')
-    if result is None:
+    localized_display_name = times[2].get('localized_display_name')
+    if localized_display_name is None:
         return {}
+    
 
-    channel = result.get('channel')
-    if channel is None:
-        return {}
-
-    item = channel.get('item')
-    location = channel.get('location')
-    units = channel.get('units')
-    if (location is None) or (item is None) or (units is None):
-        return {}
-
-    condition = item.get('condition')
-    if condition is None:
+    estimate = localized_display_name.get('estimate')
+    if estimate is None:
         return {}
 
     # print(json.dumps(item, indent=4))
 
-    speech = "Today in " + location.get('city') + ": " + condition.get('text') + \
-             ", the temperature is " + condition.get('temp') + " " + units.get('temperature')
+    speech = "The estimated arrival time for uber is " + estimate + " seconds." 
+    
+    #speech = "Today in " + location.get('city') + ": " + condition.get('text') + \
+     #        ", the temperature is " + condition.get('temp') + " " + units.get('temperature')
 
     print("Response:")
     print(speech)
@@ -95,7 +87,7 @@ def makeWebhookResult(data):
         "displayText": speech,
         # "data": data,
         # "contextOut": [],
-        "source": "apiai-weather-webhook-sample"
+        "source": "apiai-uber-webhook"
     }
 
 
