@@ -32,8 +32,8 @@ def webhook():
 
 
 def makeWebhookResult(res):
-    estimate = None
-    speech = "The cost is " + estimate 
+    estimate = 5
+    speech = "The cost is " + 5 
     
     return {
         "speech": speech,
