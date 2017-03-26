@@ -23,15 +23,15 @@ app = Flask(__name__)
 def webhook():
     #data = priceEstimate()
     data = 5
-    print (data)
+    print (data + "data")
     res = makeWebhookResult(data)
-    print (res)
+    print (res = "res")
     
     
     # print(res)
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
-    print (r)
+    print (r + "r")
     return r
 
 
