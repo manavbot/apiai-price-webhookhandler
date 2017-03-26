@@ -22,6 +22,7 @@ app = Flask(__name__)
 @app.route('/webhook', methods=['POST'])
 def webhook():
     #data = priceEstimate()
+    data = 5
     res = makeWebhookResult(data)
     
     # print(res)
