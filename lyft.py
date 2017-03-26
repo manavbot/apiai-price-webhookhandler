@@ -12,5 +12,8 @@ def Lyft(start_latitude, start_longitude, end_latitude, end_longitude):
 	client = LyftRidesClient(session)
 	response = client.get_cost_estimates(start_latitude, start_longitude, end_latitude, end_longitude)
 
-	print(response)
-	return response
+	print(response.json)
+	estimated_cost = response.json['cost_estimates'][2]['estimated_cost_cents_max'] / 100
+
+	print(estimated_cost)
+	return estimated_cost

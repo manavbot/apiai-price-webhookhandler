@@ -13,24 +13,20 @@ from lyft import Lyft
 # Flask app should start in global layout
 app = Flask(__name__)
 
-# @app.route('/')
-# def home():
-#     return 0
-
 @app.route('/webhook', methods=['GET'])
 def webhook():
-    # data = str(request.form['data'])
-    # print(data + "data")
-    google_maps_results = GoogleMaps("2184 Pettigrew Dr", "4269 Littleworth Way")
+    start = str(request.args.get('start'))
+    end = str(request.args.get('end'))
+    google_maps_results = GoogleMaps(start, end)
     print(google_maps_results)
-    # uber_results = Uber(1, 2, 2, 12)
-    # lyft_results = Lyft(1, 2, 2, 2)
-    # res = makeWebhookResult(uber_results, lyft_results)
-    # return json.dumps(res)
+    uber_results = Uber(google_maps_results[0], google_maps_results[1], google_maps_results[2], google_maps_results[3])
+    lyft_results = Lyft(google_maps_results[0], google_maps_results[1], google_maps_results[2], google_maps_results[3])
+    res = makeWebhookResult(uber_results, lyft_results)
+    return json.dumps(res)
 
 
 def makeWebhookResult(uber_results, lyft_results):
-    speech = "The cost is " + str(uber_results) + " for uber and " + str(lyft_results) + " for lyft."
+    speech = "The cost is " + str(uber_results) + " for Uber and $" + str(lyft_results) + " for Lyft."
     
     return {
         "speech": speech,
