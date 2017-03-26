@@ -21,59 +21,20 @@ app = Flask(__name__)
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
-    req = request.get_json(silent=True, force=True)
-
-    print("Request:")
-    print(json.dumps(req, indent=4))
-
-    res = processRequest(req)
-
-    res = json.dumps(res, indent=4)
+    #data = priceEstimate()
+    res = makeWebhookResult(data)
+    
     # print(res)
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
     return r
 
 
-def processRequest(req):
-    if req.get("result").get("action") != "PrintUberData":
-        return {}
-    baseurl = "https://api.uber.com/v1.2/estimates/time?start_latitude=37.7752315&start_longitude=-122.418075"
-    yql_query = None
-    if yql_query is None:
-        return {}
-    yql_url = baseurl + "&format=json"
-    result = urlopen(yql_url).read()
-    data = json.loads(result)
-    res = makeWebhookResult(data)
-    return res
 
-
-
-def makeWebhookResult(data):
-    times = data.get('times')
-    if times is None:
-        return {}
-
-    localized_display_name = times[2].get('localized_display_name')
-    if localized_display_name is None:
-        return {}
+def makeWebhookResult(res):
+    estimate = None
+    speech = "The cost is " + estimate 
     
-
-    estimate = localized_display_name.get('estimate')
-    if estimate is None:
-        return {}
-
-    # print(json.dumps(item, indent=4))
-
-    speech = "The estimated arrival time for uber is " + estimate + " seconds." 
-    
-    #speech = "Today in " + location.get('city') + ": " + condition.get('text') + \
-     #        ", the temperature is " + condition.get('temp') + " " + units.get('temperature')
-
-    print("Response:")
-    print(speech)
-
     return {
         "speech": speech,
         "displayText": speech,
