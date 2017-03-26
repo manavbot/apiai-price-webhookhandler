@@ -1,44 +1,33 @@
 #!/usr/bin/env python
 
-from __future__ import print_function
-from future.standard_library import install_aliases
-install_aliases()
-
-from urllib.parse import urlparse, urlencode
-from urllib.request import urlopen, Request
-from urllib.error import HTTPError
-
 import json
 import os
 
 from flask import Flask
 from flask import request
-from flask import make_response
+
+from uber import Uber
+# from lyft import Lyft
 
 # Flask app should start in global layout
 app = Flask(__name__)
 
+# @app.route('/')
+# def home():
+#     return 0
 
-@app.route('/webhook', methods=['POST'])
+@app.route('/webhook', methods=['GET'])
 def webhook():
-    #data = priceEstimate()
-    data = 5
-    print (data + "data")
-    res = makeWebhookResult(data)
-    print (res = "res")
-    
-    
-    # print(res)
-    r = make_response(res)
-    r.headers['Content-Type'] = 'application/json'
-    print (r + "r")
-    return r
+    # data = str(request.form['data'])
+    # print(data + "data")
+    uber_results = Uber(12)
+    lyft_results = 12 #Lyft(data)
+    res = makeWebhookResult(uber_results, lyft_results)
+    return json.dumps(res)
 
 
-
-def makeWebhookResult(data):
-    estimate = data
-    speech = "The cost is " + estimate 
+def makeWebhookResult(uber_results, lyft_results):
+    speech = "The cost is " + str(uber_results) + " for uber and " + str(lyft_results) + " for lyft."
     
     return {
         "speech": speech,
@@ -54,4 +43,4 @@ if __name__ == '__main__':
 
     print("Starting app on port %d" % port)
 
-    app.run(debug=False, port=port, host='0.0.0.0')
+    app.run(debug=True, port=port, host='0.0.0.0')
