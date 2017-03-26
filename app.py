@@ -32,8 +32,8 @@ def webhook():
 
 
 
-def makeWebhookResult(res):
-    estimate = 5
+def makeWebhookResult(data):
+    estimate = data
     speech = "The cost is " + estimate 
     
     return {
