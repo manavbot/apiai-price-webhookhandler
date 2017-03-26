@@ -3,14 +3,14 @@ import json
 from uber_rides.session import Session
 
 
-def Uber(data):
+def Uber(start_latitude, start_longitude, end_latitude, end_longitude):
 	request_headers = {
 		"Authorization": "Token VG0_JuX6mRTU1FUTvL8wT1M8-2V51wrLv4sKzxaS" 
 	}
 
 	session = Session(server_token = "sVG0_JuX6mRTU1FUTvL8wT1M8-2V51wrLv4sKzxaS")
 
-	request = urllib2.Request("https://api.uber.com/v1.2/estimates/price?start_latitude=37.7752315&start_longitude=-122.418075&end_latitude=37.7752415&end_longitude=-122.518075", headers = request_headers)
+	request = urllib2.Request("https://api.uber.com/v1.2/estimates/price?start_latitude=" + str(start_latitude) + "&start_longitude=" + str(start_longitude) + "&end_latitude=" +  str(end_latitude) + "&end_longitude=" + str(end_longitude), headers = request_headers)
 	content = urllib2.urlopen(request).read()	
 	jsoncontent = json.loads(content)
 	print(jsoncontent)

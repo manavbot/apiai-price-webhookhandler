@@ -1,10 +1,7 @@
 import googlemaps
-from datetime import datetime
 
 def GoogleMaps(starting_location, ending_location):
-	maps = googlemaps.Client(key='AIzaSyCBW43NX5azxoLmUKD1vZiZxbqGaG9NUGo')
-
-	# Geocoding an address
+	gmaps = googlemaps.Client(key='AIzaSyCOlweck6eXODDMta-HgidoYqhM3GQ9XOE')
 	geocode_starting_location = maps.geocode(starting_location)
 	geocode_ending_location = maps.geocode(ending_location)
 	print("Start: ", geocode_starting_location)

@@ -21,11 +21,12 @@ app = Flask(__name__)
 def webhook():
     # data = str(request.form['data'])
     # print(data + "data")
-    # google_maps_results = GoogleMaps("2184 Pettigrew Dr", "4269 Littleworth Way")
-    uber_results = Uber(12)
-    lyft_results = Lyft(12)
-    res = makeWebhookResult(uber_results, lyft_results)
-    return json.dumps(res)
+    google_maps_results = GoogleMaps("2184 Pettigrew Dr", "4269 Littleworth Way")
+    print(google_maps_results)
+    # uber_results = Uber(1, 2, 2, 12)
+    # lyft_results = Lyft(1, 2, 2, 2)
+    # res = makeWebhookResult(uber_results, lyft_results)
+    # return json.dumps(res)
 
 
 def makeWebhookResult(uber_results, lyft_results):
