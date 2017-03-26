@@ -34,14 +34,14 @@ def webhook():
 
 def makeWebhookResult(res):
     estimate = 5
-    speech = "The cost is " + 5 
+    speech = "The cost is " + estimate 
     
     return {
         "speech": speech,
         "displayText": speech,
         # "data": data,
         # "contextOut": [],
-        "source": "apiai-uber-webhook"
+        "source": "apiai-price-webhookhandler"
     }
 
 
